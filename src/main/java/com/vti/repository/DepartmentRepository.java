@@ -99,6 +99,16 @@ public class DepartmentRepository {
 
     //D
     public static void deleteDepartment(int departmentId) {
+        String sql = "delete from department where id = ?;";
 
+        try {
+            Connection connection = ConnectionProvider.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, departmentId);
+            statement.executeUpdate();
+            System.out.println("Delete department thành công: " + departmentId);
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
     }
 }
