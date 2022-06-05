@@ -4,10 +4,7 @@ import com.vti.config.ConnectionProvider;
 import com.vti.entity.Role;
 import com.vti.entity.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,7 +80,29 @@ public class UserRepository {
 
         String sql = "insert into account_user(user_id, full_name, email, password, role, exp_in_year, pro_skill) " +
                 " value (?, ?, ?, ?, ?, ?, ?)";
+        try {
+            Connection connection = ConnectionProvider.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, user.getUserId());
+            statement.setString(2, user.getFullName());
+            statement.setString(3, user.getEmail());
+            statement.setString(4, user.getPassword());
+            statement.setString(5, user.getRole().toString());
+            if (user.getRole() == Role.ADMIN) {
+                statement.setInt(6, user.getExpInYear());
+                statement.setObject(7, null);
+            } else {
+                statement.setObject(6, null);
+                statement.setString(7, user.getProSkill());
+            }
+            int deletedRows = statement.executeUpdate();
+            if (deletedRows > 0) {
+                return true;
+            }
+        } catch (SQLException exception) {
+            exception.printStackTrace();
 
+        }
         return false;
     }
 }

@@ -42,11 +42,12 @@ public class Program {
 
     static void taoUser() {
         User user = new User();
-        user.setEmail("hoang@vti.com.vn");
+        user.setEmail("hoang1@vti.com.vn");
         user.setFullName("Hoang Tran");
         user.setPassword("123456");
-        user.setRole(Role.EMPLOYEE);
+        user.setRole(Role.ADMIN);
         user.setProSkill("java, mysql");
+        user.setExpInYear(100);
         UserRepository.createUser(user);
     }
 
