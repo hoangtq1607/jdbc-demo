@@ -39,6 +39,51 @@ public class UserRepository {
     }
 
     public static User findById(int userId) {
+        String sql = "select user_id, full_name, email, password, role, exp_in_year, pro_skill\n" +
+                "from account_user where user_id = ?";
+        try {
+            Connection connection = ConnectionProvider.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                String fullName = resultSet.getString("full_name");
+                String email = resultSet.getString("email");
+                String password = resultSet.getString("password");
+                String role = resultSet.getString("role");
+                int exInYear = resultSet.getInt("exp_in_year");
+                String proSkill = resultSet.getString("pro_skill");
+                return new User(userId, fullName, email, password, Role.valueOf(role), exInYear, proSkill);
+            }
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
         return null;
+    }
+
+    public static boolean deleteById(int userId) {
+        String sql = "delete from account_user where user_id = ?";
+        try {
+
+            Connection connection = ConnectionProvider.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, userId);
+            int deletedRows = statement.executeUpdate();
+            if (deletedRows > 0) {
+                return true;
+            }
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+
+        }
+        return false;
+    }
+
+    public static boolean createUser(User user) {
+
+        String sql = "insert into account_user(user_id, full_name, email, password, role, exp_in_year, pro_skill) " +
+                " value (?, ?, ?, ?, ?, ?, ?)";
+
+        return false;
     }
 }
