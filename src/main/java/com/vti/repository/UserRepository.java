@@ -38,4 +38,7 @@ public class UserRepository {
         return users;
     }
 
+    public static User findById(int userId) {
+        return null;
+    }
 }

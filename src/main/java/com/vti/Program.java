@@ -9,6 +9,7 @@ public class Program {
 
     public static void main(String[] args) {
         bai2();
+        bai3(1);
     }
 
     static void bai2() {
@@ -19,5 +20,10 @@ public class Program {
             System.out.printf("%-10s | %-20s | %-15s\n", user.getUserId(), user.getFullName(), user.getEmail());
         }
     }
+    static void bai3(int userId) {
+        User user = UserRepository.findById(userId);
+        System.out.println(user);
+    }
+
 
 }
