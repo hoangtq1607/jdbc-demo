@@ -19,7 +19,7 @@ public class Program {
         for (User user : all) {
             System.out.printf("%-10s | %-20s | %-15s\n", user.getUserId(), user.getFullName(), user.getEmail());
         }
-    }
+    } 
     static void bai3(int userId) {
         User user = UserRepository.findById(userId);
         System.out.println(user);
