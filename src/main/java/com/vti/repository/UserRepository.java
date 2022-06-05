@@ -57,6 +57,28 @@ public class UserRepository {
         }
         return null;
     }
+    public static User findByEmailAndPassword(String email, String password) {
+        String sql = "select user_id, full_name, email, password, role, exp_in_year, pro_skill\n" +
+                "from account_user where email = ? and password = ? AND role = 'ADMIN'";
+        try {
+            Connection connection = ConnectionProvider.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, email);
+            statement.setString(2, password);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                int userId = resultSet.getInt("user_id");
+                String fullName = resultSet.getString("full_name");
+                String role = resultSet.getString("role");
+                int exInYear = resultSet.getInt("exp_in_year");
+                String proSkill = resultSet.getString("pro_skill");
+                return new User(userId, fullName, email, password, Role.valueOf(role), exInYear, proSkill);
+            }
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return null;
+    }
 
     public static boolean deleteById(int userId) {
         String sql = "delete from account_user where user_id = ?";

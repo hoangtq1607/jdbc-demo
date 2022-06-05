@@ -19,11 +19,19 @@ public class Program {
     private static void bai56() {
         System.out.print("Nhap email: ");
         String email = scanner.nextLine();
+        if (!CheckUtils.isEmailValid(email)) {
+            System.out.println("Email khong dung dinh dang");
+            return;
+        }
         System.out.print("Nhap password: ");
         String password = scanner.nextLine();
-
-        if (CheckUtils.isEmailValid(email) && CheckUtils.isPasswordValid(password)) {
-            System.out.println("Success");
+        if (!CheckUtils.isPasswordValid(password)) {
+            System.out.println("Password khong dung dinh dang");
+            return;
+        }
+        User adminUser = UserRepository.findByEmailAndPassword(email, password);
+        if (adminUser != null) {
+            System.out.println("Welcome '" + adminUser.getFullName() + "' to this system!");
             taoUser();
         } else {
             System.out.println("Email or password incorrect!!");
@@ -60,13 +68,14 @@ public class Program {
     static void taoUser() {
         System.out.print("Nhap full name: ");
         String fullName = scanner.nextLine();
-        System.out.print("Nhap email: ");
-        String email = scanner.nextLine();
-
         if (!CheckUtils.isFullNameValid(fullName)) {
             System.out.println("Full name chi duoc chua khoang trang va ki tu dac biet!");
             return;
         }
+
+        System.out.print("Nhap email: ");
+        String email = scanner.nextLine();
+
         if (!CheckUtils.isEmailValid(email)) {
             System.out.println("Email khong dung dinh dang");
             return;
